@@ -1053,7 +1053,7 @@
                 <h2><i class="fas fa-edit"></i> <span id="input-label">أدخل النص الخاص بك</span></h2>
                 <div class="textarea-container">
                     <textarea id="text-input" placeholder="ابدأ في الكتابة أو الصق النص الخاص بك هنا..."></textarea>
-                    <div class="char-counter"><span id="real-time-count">0</span> حرف</div>
+                    <div class="char-counter"><span id="real-time-count">0</span> <span id="characters-unit">حرف</span></div>
                 </div>
                 <div class="action-buttons">
                     <button class="btn-primary" id="count-btn">
@@ -1151,7 +1151,7 @@
                         <div class="feature-icon">
                             <i class="fas fa-search"></i>
                         </div>
-                        <h3>تحليل SEO</h3>
+                        <h3 id="seo-analysis-label">تحليل SEO</h3>
                         <p id="seo-analysis-text">حسن محتواك لمحركات البحث</p>
                         <div class="seo-score">
                             <div class="score-circle">
@@ -1166,7 +1166,7 @@
                         <div class="feature-icon">
                             <i class="fas fa-brain"></i>
                         </div>
-                        <h3>درجة قابلية القراءة</h3>
+                        <h3 id="readability-label">درجة قابلية القراءة</h3>
                         <p id="readability-text">تحقق من مدى سهولة قراءة النص</p>
                         <div class="stat-value" id="readability-score">0%</div>
                         <div class="progress-bar">
@@ -1177,7 +1177,7 @@
                         <div class="feature-icon">
                             <i class="fas fa-chart-line"></i>
                         </div>
-                        <h3>كثافة الكلمات المفتاحية</h3>
+                        <h3 id="keyword-density-label">كثافة الكلمات المفتاحية</h3>
                         <p id="keyword-density-text">حلل كثافة الكلمات المفتاحية في النص</p>
                         <div class="stat-value" id="keyword-density">0%</div>
                         <div class="progress-bar">
@@ -1188,7 +1188,7 @@
                         <div class="feature-icon">
                             <i class="fas fa-stopwatch"></i>
                         </div>
-                        <h3>وقت الكتابة</h3>
+                        <h3 id="writing-time-label">وقت الكتابة</h3>
                         <p id="writing-time-text">تقدير الوقت اللازم للكتابة</p>
                         <div class="stat-value" id="writing-time">0 دقيقة</div>
                         <div class="progress-bar">
@@ -1200,15 +1200,15 @@
                 <div class="export-options">
                     <button class="btn-secondary" id="export-pdf">
                         <i class="fas fa-file-pdf"></i>
-                        <span>تصدير كـ PDF</span>
+                        <span id="export-pdf-label">تصدير كـ PDF</span>
                     </button>
                     <button class="btn-secondary" id="export-csv">
                         <i class="fas fa-file-csv"></i>
-                        <span>تصدير كـ CSV</span>
+                        <span id="export-csv-label">تصدير كـ CSV</span>
                     </button>
                     <button class="btn-secondary" id="export-txt">
                         <i class="fas fa-file-alt"></i>
-                        <span>تصدير كـ TXT</span>
+                        <span id="export-txt-label">تصدير كـ TXT</span>
                     </button>
                 </div>
             </section>
@@ -1298,6 +1298,8 @@
                 // Time units
                 minute: "min",
                 second: "sec",
+                minutes: "mins",
+                seconds: "secs",
                 
                 // Most Used
                 mostUsedLabel: "Most Used",
@@ -1308,7 +1310,25 @@
                 seoAnalysisText: "Optimize your content for search engines",
                 readabilityText: "Check how easy your text is to read",
                 keywordDensityText: "Analyze keyword usage in your text",
-                writingTimeText: "Estimate how long it takes to write"
+                writingTimeText: "Estimate how long it takes to write",
+                
+                // Export buttons
+                exportPdfLabel: "Export as PDF",
+                exportCsvLabel: "Export as CSV", 
+                exportTxtLabel: "Export as TXT",
+                
+                // Feature card titles
+                seoAnalysisLabel: "SEO Analysis",
+                readabilityLabel: "Readability Score",
+                keywordDensityLabel: "Keyword Density", 
+                writingTimeLabel: "Writing Time",
+                
+                // Character unit
+                characterUnit: "character",
+                characterUnitPlural: "characters",
+                
+                // No data text
+                noData: "No data"
             },
             ar: {
                 appName: "Countfy",
@@ -1339,14 +1359,26 @@
                 exportSuccess: "تم التصدير بنجاح!",
                 clearHistorySuccess: "تم مسح السجل!",
                 minute: "دقيقة",
-                second: "ثانية",
+                second: "ثانية", 
+                minutes: "دقائق",
+                seconds: "ثواني",
                 mostUsedLabel: "الأكثر استخداماً",
                 topWordsLabel: "أكثر 5 كلمات",
                 topCharsLabel: "أكثر 5 أحرف",
                 seoAnalysisText: "حسن محتواك لمحركات البحث",
                 readabilityText: "تحقق من مدى سهولة قراءة النص",
                 keywordDensityText: "حلل كثافة الكلمات المفتاحية في النص",
-                writingTimeText: "تقدير الوقت اللازم للكتابة"
+                writingTimeText: "تقدير الوقت اللازم للكتابة",
+                exportPdfLabel: "تصدير كـ PDF",
+                exportCsvLabel: "تصدير كـ CSV",
+                exportTxtLabel: "تصدير كـ TXT",
+                seoAnalysisLabel: "تحليل SEO",
+                readabilityLabel: "درجة قابلية القراءة",
+                keywordDensityLabel: "كثافة الكلمات المفتاحية",
+                writingTimeLabel: "وقت الكتابة",
+                characterUnit: "حرف",
+                characterUnitPlural: "حروف",
+                noData: "لا توجد بيانات"
             },
             es: {
                 appName: "Countfy",
@@ -1378,13 +1410,25 @@
                 clearHistorySuccess: "¡Historial limpiado!",
                 minute: "min",
                 second: "seg",
+                minutes: "mins", 
+                seconds: "segs",
                 mostUsedLabel: "Más Usados",
                 topWordsLabel: "Top 5 Palabras",
                 topCharsLabel: "Top 5 Caracteres",
                 seoAnalysisText: "Optimiza tu contenido para motores de búsqueda",
                 readabilityText: "Comprueba qué tan fácil es leer tu texto",
                 keywordDensityText: "Analiza el uso de palabras clave en tu texto",
-                writingTimeText: "Estima cuánto tiempo lleva escribir"
+                writingTimeText: "Estima cuánto tiempo lleva escribir",
+                exportPdfLabel: "Exportar como PDF",
+                exportCsvLabel: "Exportar como CSV",
+                exportTxtLabel: "Exportar como TXT",
+                seoAnalysisLabel: "Análisis SEO",
+                readabilityLabel: "Puntuación de Legibilidad",
+                keywordDensityLabel: "Densidad de Palabras Clave",
+                writingTimeLabel: "Tiempo de Escritura",
+                characterUnit: "carácter",
+                characterUnitPlural: "caracteres",
+                noData: "Sin datos"
             },
             de: {
                 appName: "Countfy",
@@ -1416,13 +1460,25 @@
                 clearHistorySuccess: "Verlauf gelöscht!",
                 minute: "Min",
                 second: "Sek",
+                minutes: "Min", 
+                seconds: "Sek",
                 mostUsedLabel: "Am häufigsten verwendet",
                 topWordsLabel: "Top 5 Wörter",
                 topCharsLabel: "Top 5 Zeichen",
                 seoAnalysisText: "Optimieren Sie Ihre Inhalte für Suchmaschinen",
                 readabilityText: "Prüfen Sie, wie leicht Ihr Text zu lesen ist",
                 keywordDensityText: "Analysieren Sie die Schlüsselwortnutzung in Ihrem Text",
-                writingTimeText: "Schätzen Sie, wie lange das Schreiben dauert"
+                writingTimeText: "Schätzen Sie, wie lange das Schreiben dauert",
+                exportPdfLabel: "Als PDF exportieren",
+                exportCsvLabel: "Als CSV exportieren",
+                exportTxtLabel: "Als TXT exportieren",
+                seoAnalysisLabel: "SEO-Analyse",
+                readabilityLabel: "Lesbarkeits-Score",
+                keywordDensityLabel: "Schlüsselwortdichte",
+                writingTimeLabel: "Schreibzeit",
+                characterUnit: "Zeichen",
+                characterUnitPlural: "Zeichen",
+                noData: "Keine Daten"
             },
             it: {
                 appName: "Countfy",
@@ -1454,13 +1510,25 @@
                 clearHistorySuccess: "Cronologia cancellata!",
                 minute: "min",
                 second: "sec",
+                minutes: "min", 
+                seconds: "sec",
                 mostUsedLabel: "Più Usati",
                 topWordsLabel: "Top 5 Parole",
                 topCharsLabel: "Top 5 Caratteri",
                 seoAnalysisText: "Ottimizza i tuoi contenuti per i motori di ricerca",
                 readabilityText: "Controlla quanto è facile leggere il tuo testo",
                 keywordDensityText: "Analizza l'uso delle parole chiave nel tuo testo",
-                writingTimeText: "Stima quanto tempo ci vuole per scrivere"
+                writingTimeText: "Stima quanto tempo ci vuole per scrivere",
+                exportPdfLabel: "Esporta come PDF",
+                exportCsvLabel: "Esporta come CSV",
+                exportTxtLabel: "Esporta come TXT",
+                seoAnalysisLabel: "Analisi SEO",
+                readabilityLabel: "Punteggio di Leggibilità",
+                keywordDensityLabel: "Densità Parole Chiave",
+                writingTimeLabel: "Tempo di Scrittura",
+                characterUnit: "carattere",
+                characterUnitPlural: "caratteri",
+                noData: "Nessun dato"
             },
             ru: {
                 appName: "Countfy",
@@ -1492,13 +1560,25 @@
                 clearHistorySuccess: "История очищена!",
                 minute: "мин",
                 second: "сек",
+                minutes: "мин", 
+                seconds: "сек",
                 mostUsedLabel: "Наиболее используемые",
                 topWordsLabel: "Топ 5 слов",
                 topCharsLabel: "Топ 5 символов",
                 seoAnalysisText: "Оптимизируйте ваш контент для поисковых систем",
                 readabilityText: "Проверьте, насколько легко читать ваш текст",
                 keywordDensityText: "Проанализируйте использование ключевых слов в вашем тексте",
-                writingTimeText: "Оцените, сколько времени займет написание"
+                writingTimeText: "Оцените, сколько времени займет написание",
+                exportPdfLabel: "Экспорт в PDF",
+                exportCsvLabel: "Экспорт в CSV",
+                exportTxtLabel: "Экспорт в TXT",
+                seoAnalysisLabel: "SEO Анализ",
+                readabilityLabel: "Оценка Читаемости",
+                keywordDensityLabel: "Плотность Ключевых Слов",
+                writingTimeLabel: "Время Написания",
+                characterUnit: "символ",
+                characterUnitPlural: "символов",
+                noData: "Нет данных"
             },
             zh: {
                 appName: "Countfy",
@@ -1530,13 +1610,25 @@
                 clearHistorySuccess: "历史记录已清除！",
                 minute: "分钟",
                 second: "秒",
+                minutes: "分钟", 
+                seconds: "秒",
                 mostUsedLabel: "最常用",
                 topWordsLabel: "前5个单词",
                 topCharsLabel: "前5个字符",
                 seoAnalysisText: "优化您的内容以用于搜索引擎",
                 readabilityText: "检查您的文本阅读难度",
                 keywordDensityText: "分析文本中的关键词使用情况",
-                writingTimeText: "估计写作所需时间"
+                writingTimeText: "估计写作所需时间",
+                exportPdfLabel: "导出为PDF",
+                exportCsvLabel: "导出为CSV",
+                exportTxtLabel: "导出为TXT",
+                seoAnalysisLabel: "SEO分析",
+                readabilityLabel: "可读性评分",
+                keywordDensityLabel: "关键词密度",
+                writingTimeLabel: "写作时间",
+                characterUnit: "字符",
+                characterUnitPlural: "字符",
+                noData: "无数据"
             },
             ja: {
                 appName: "Countfy",
@@ -1568,13 +1660,25 @@
                 clearHistorySuccess: "履歴がクリアされました！",
                 minute: "分",
                 second: "秒",
+                minutes: "分", 
+                seconds: "秒",
                 mostUsedLabel: "最も使用された",
                 topWordsLabel: "トップ5単語",
                 topCharsLabel: "トップ5文字",
                 seoAnalysisText: "検索エンジン向けにコンテンツを最適化する",
                 readabilityText: "テキストの読みやすさを確認する",
                 keywordDensityText: "テキスト内のキーワード使用状況を分析する",
-                writingTimeText: "執筆にかかる時間を推定する"
+                writingTimeText: "執筆にかかる時間を推定する",
+                exportPdfLabel: "PDFとしてエクスポート",
+                exportCsvLabel: "CSVとしてエクスポート",
+                exportTxtLabel: "TXTとしてエクスポート",
+                seoAnalysisLabel: "SEO分析",
+                readabilityLabel: "読みやすさスコア",
+                keywordDensityLabel: "キーワード密度",
+                writingTimeLabel: "執筆時間",
+                characterUnit: "文字",
+                characterUnitPlural: "文字",
+                noData: "データなし"
             },
             ko: {
                 appName: "Countfy",
@@ -1606,13 +1710,25 @@
                 clearHistorySuccess: "기록이 지워졌습니다!",
                 minute: "분",
                 second: "초",
+                minutes: "분", 
+                seconds: "초",
                 mostUsedLabel: "가장 많이 사용된",
                 topWordsLabel: "상위 5개 단어",
                 topCharsLabel: "상위 5개 문자",
                 seoAnalysisText: "검색 엔진에 맞게 콘텐츠 최적화",
                 readabilityText: "텍스트의 가독성 확인",
                 keywordDensityText: "텍스트 내 키워드 사용량 분석",
-                writingTimeText: "작성하는 데 걸리는 시간 추정"
+                writingTimeText: "작성하는 데 걸리는 시간 추정",
+                exportPdfLabel: "PDF로 내보내기",
+                exportCsvLabel: "CSV로 내보내기",
+                exportTxtLabel: "TXT로 내보내기",
+                seoAnalysisLabel: "SEO 분석",
+                readabilityLabel: "가독성 점수",
+                keywordDensityLabel: "키워드 밀도",
+                writingTimeLabel: "작성 시간",
+                characterUnit: "문자",
+                characterUnitPlural: "문자",
+                noData: "데이터 없음"
             },
             hi: {
                 appName: "Countfy",
@@ -1644,13 +1760,25 @@
                 clearHistorySuccess: "इतिहास साफ किया गया!",
                 minute: "मिनट",
                 second: "सेकंड",
+                minutes: "मिनट", 
+                seconds: "सेकंड",
                 mostUsedLabel: "सबसे अधिक इस्तेमाल किए गए",
                 topWordsLabel: "शीर्ष 5 शब्द",
                 topCharsLabel: "शीर्ष 5 अक्षर",
                 seoAnalysisText: "खोज इंजन के लिए अपनी सामग्री को अनुकूलित करें",
                 readabilityText: "जांचें कि आपका पाठ कितना आसानी से पढ़ा जा सकता है",
                 keywordDensityText: "अपने पाठ में कीवर्ड के उपयोग का विश्लेषण करें",
-                writingTimeText: "लिखने में कितना समय लगेगा इसका अनुमान लगाएं"
+                writingTimeText: "लिखने में कितना समय लगेगा इसका अनुमान लगाएं",
+                exportPdfLabel: "PDF के रूप में निर्यात करें",
+                exportCsvLabel: "CSV के रूप में निर्यात करें",
+                exportTxtLabel: "TXT के रूप में निर्यात करें",
+                seoAnalysisLabel: "SEO विश्लेषण",
+                readabilityLabel: "पठनीयता स्कोर",
+                keywordDensityLabel: "कीवर्ड घनत्व",
+                writingTimeLabel: "लेखन समय",
+                characterUnit: "अक्षर",
+                characterUnitPlural: "अक्षर",
+                noData: "कोई डेटा नहीं"
             },
             fr: {
                 appName: "Countfy",
@@ -1682,13 +1810,25 @@
                 clearHistorySuccess: "Historique effacé !",
                 minute: "min",
                 second: "sec",
+                minutes: "min", 
+                seconds: "sec",
                 mostUsedLabel: "Les plus utilisés",
                 topWordsLabel: "Top 5 des mots",
                 topCharsLabel: "Top 5 des caractères",
                 seoAnalysisText: "Optimisez votre contenu pour les moteurs de recherche",
-                readabilityText: "Vérifiez la facilité de lecture de votre texte",
+                readabilityText: "Vérifiez la facilité de lecture de votre texto",
                 keywordDensityText: "Analysez l'utilisation des mots-clés dans votre texto",
-                writingTimeText: "Estimez le temps nécessaire pour écrire"
+                writingTimeText: "Estimez le temps nécessaire pour écrire",
+                exportPdfLabel: "Exporter en PDF",
+                exportCsvLabel: "Exporter en CSV",
+                exportTxtLabel: "Exporter en TXT",
+                seoAnalysisLabel: "Analyse SEO",
+                readabilityLabel: "Score de Lisibilité",
+                keywordDensityLabel: "Densité de Mots-Clés",
+                writingTimeLabel: "Temps d'Écriture",
+                characterUnit: "caractère",
+                characterUnitPlural: "caractères",
+                noData: "Aucune donnée"
             }
         };
 
@@ -1710,6 +1850,7 @@
         // DOM elements
         const textInput = document.getElementById('text-input');
         const realTimeCount = document.getElementById('real-time-count');
+        const charactersUnit = document.getElementById('characters-unit');
         const charCount = document.getElementById('char-count');
         const wordCount = document.getElementById('word-count');
         const sentenceCount = document.getElementById('sentence-count');
@@ -1794,11 +1935,78 @@
         // Update real-time character count
         function updateRealTimeCount() {
             const text = textInput.value;
+            const currentLang = localStorage.getItem('language') || 'ar';
             realTimeCount.textContent = text.length.toLocaleString();
+            
+            // Update character unit
+            const charCount = text.length;
+            charactersUnit.textContent = charCount === 1 ? 
+                translations[currentLang].characterUnit : 
+                translations[currentLang].characterUnitPlural;
+        }
+
+        // Update all dynamic texts when language changes
+        function updateAllTexts(lang) {
+            // Update all static texts
+            document.getElementById('input-label').textContent = translations[lang].inputLabel;
+            document.getElementById('results-label').textContent = translations[lang].resultsLabel;
+            document.getElementById('format-text-label').textContent = translations[lang].formatTextLabel;
+            document.getElementById('copy-text-label').textContent = translations[lang].copyTextLabel;
+            document.getElementById('clear-text-label').textContent = translations[lang].clearTextLabel;
+            document.getElementById('count-text-label').textContent = translations[lang].countTextLabel;
+            document.getElementById('sample-text-label').textContent = translations[lang].sampleTextLabel;
+            document.getElementById('clear-history-label').textContent = translations[lang].clearHistoryLabel;
+            document.getElementById('history-label').textContent = translations[lang].historyLabel;
+            document.getElementById('characters-label').textContent = translations[lang].charactersLabel;
+            document.getElementById('words-label').textContent = translations[lang].wordsLabel;
+            document.getElementById('sentences-label').textContent = translations[lang].sentencesLabel;
+            document.getElementById('numbers-label').textContent = translations[lang].numbersLabel;
+            document.getElementById('punctuation-label').textContent = translations[lang].punctuationLabel;
+            document.getElementById('characters-no-spaces-label').textContent = translations[lang].charactersNoSpacesLabel;
+            document.getElementById('paragraphs-label').textContent = translations[lang].paragraphsLabel;
+            document.getElementById('reading-time-label').textContent = translations[lang].readingTimeLabel;
+            document.getElementById('most-used-label').textContent = translations[lang].mostUsedLabel;
+            document.getElementById('top-words-label').textContent = translations[lang].topWordsLabel;
+            document.getElementById('top-chars-label').textContent = translations[lang].topCharsLabel;
+            document.getElementById('seo-analysis-text').textContent = translations[lang].seoAnalysisText;
+            document.getElementById('readability-text').textContent = translations[lang].readabilityText;
+            document.getElementById('keyword-density-text').textContent = translations[lang].keywordDensityText;
+            document.getElementById('writing-time-text').textContent = translations[lang].writingTimeText;
+            
+            textInput.placeholder = translations[lang].inputPlaceholder;
+
+            // Update export buttons
+            document.getElementById('export-pdf-label').textContent = translations[lang].exportPdfLabel;
+            document.getElementById('export-csv-label').textContent = translations[lang].exportCsvLabel;
+            document.getElementById('export-txt-label').textContent = translations[lang].exportTxtLabel;
+
+            // Update feature card titles
+            document.getElementById('seo-analysis-label').textContent = translations[lang].seoAnalysisLabel;
+            document.getElementById('readability-label').textContent = translations[lang].readabilityLabel;
+            document.getElementById('keyword-density-label').textContent = translations[lang].keywordDensityLabel;
+            document.getElementById('writing-time-label').textContent = translations[lang].writingTimeLabel;
+
+            // Update character counter unit
+            const charCount = textInput.value.length;
+            charactersUnit.textContent = charCount === 1 ? 
+                translations[lang].characterUnit : 
+                translations[lang].characterUnitPlural;
+
+            // Update history if needed
+            loadHistory();
+
+            // Re-analyze text to update time units and other dynamic content
+            if (textInput.value.trim()) {
+                analyzeText();
+            } else {
+                resetStats();
+            }
         }
 
         // Reset all stats to zero
         function resetStats() {
+            const currentLang = localStorage.getItem('language') || 'ar';
+            
             charCount.textContent = '0';
             wordCount.textContent = '0';
             sentenceCount.textContent = '0';
@@ -1806,11 +2014,11 @@
             punctuationCount.textContent = '0';
             charNoSpaces.textContent = '0';
             paragraphCount.textContent = '0';
-            readingTime.textContent = '0 دقيقة';
+            readingTime.textContent = `0 ${translations[currentLang].minute}`;
             seoScore.textContent = '0%';
             readabilityScore.textContent = '0%';
             keywordDensity.textContent = '0%';
-            writingTime.textContent = '0 دقيقة';
+            writingTime.textContent = `0 ${translations[currentLang].minute}`;
             
             // Reset progress bars
             seoProgress.style.width = '0%';
@@ -1818,9 +2026,9 @@
             keywordProgress.style.width = '0%';
             writingProgress.style.width = '0%';
             
-            // Reset top lists
-            topWordsList.innerHTML = '<div class="most-used-item"><span class="most-used-text">لا توجد بيانات</span><span class="most-used-count">0</span></div>';
-            topCharsList.innerHTML = '<div class="most-used-item"><span class="most-used-text">لا توجد بيانات</span><span class="most-used-count">0</span></div>';
+            // Reset top lists with translated text
+            topWordsList.innerHTML = `<div class="most-used-item"><span class="most-used-text">${translations[currentLang].noData}</span><span class="most-used-count">0</span></div>`;
+            topCharsList.innerHTML = `<div class="most-used-item"><span class="most-used-text">${translations[currentLang].noData}</span><span class="most-used-count">0</span></div>`;
         }
 
         // Analyze text and update stats
@@ -1836,6 +2044,8 @@
             setTimeout(() => {
                 countBtn.classList.remove('pulse');
             }, 1000);
+            
+            const currentLang = localStorage.getItem('language') || 'ar';
             
             // Basic counts
             const chars = text.length;
@@ -1867,12 +2077,11 @@
             // Reading time (assuming 200 words per minute)
             const readingTimeMinutes = Math.floor(words / 200);
             const readingTimeSeconds = Math.round((words % 200) / 200 * 60);
-            const currentLang = localStorage.getItem('language') || 'ar';
             
             if (readingTimeMinutes === 0) {
-                readingTime.textContent = `${readingTimeSeconds} ${translations[currentLang].second}`;
+                readingTime.textContent = `${readingTimeSeconds} ${readingTimeSeconds === 1 ? translations[currentLang].second : translations[currentLang].seconds}`;
             } else {
-                readingTime.textContent = `${readingTimeMinutes} ${translations[currentLang].minute} ${readingTimeSeconds} ${translations[currentLang].second}`;
+                readingTime.textContent = `${readingTimeMinutes} ${readingTimeMinutes === 1 ? translations[currentLang].minute : translations[currentLang].minutes} ${readingTimeSeconds} ${readingTimeSeconds === 1 ? translations[currentLang].second : translations[currentLang].seconds}`;
             }
             
             // Advanced features
@@ -1898,9 +2107,9 @@
             writingProgress.style.width = `${writingProgressValue}%`;
             
             if (writingTimeMinutes === 0) {
-                writingTime.textContent = `${writingTimeSecs} ${translations[currentLang].second}`;
+                writingTime.textContent = `${writingTimeSecs} ${writingTimeSecs === 1 ? translations[currentLang].second : translations[currentLang].seconds}`;
             } else {
-                writingTime.textContent = `${writingTimeMinutes} ${translations[currentLang].minute} ${writingTimeSecs} ${translations[currentLang].second}`;
+                writingTime.textContent = `${writingTimeMinutes} ${writingTimeMinutes === 1 ? translations[currentLang].minute : translations[currentLang].minutes} ${writingTimeSecs} ${writingTimeSecs === 1 ? translations[currentLang].second : translations[currentLang].seconds}`;
             }
             
             // Update score circle
@@ -1914,7 +2123,7 @@
             saveToHistory(text);
             
             // Show success notification
-            showNotification(translations[localStorage.getItem('language') || 'ar'].countSuccess, "success");
+            showNotification(translations[currentLang].countSuccess, "success");
         }
 
         // Calculate a comprehensive SEO score
@@ -2002,12 +2211,14 @@
 
         // Update most used words and characters
         function updateMostUsed(text) {
+            const currentLang = localStorage.getItem('language') || 'ar';
+            
             // Most used words
             const wordFreq = getWordFrequency(text);
             topWordsList.innerHTML = '';
             
             if (wordFreq.length === 0) {
-                topWordsList.innerHTML = '<div class="most-used-item"><span class="most-used-text">لا توجد بيانات</span><span class="most-used-count">0</span></div>';
+                topWordsList.innerHTML = `<div class="most-used-item"><span class="most-used-text">${translations[currentLang].noData}</span><span class="most-used-count">0</span></div>`;
             } else {
                 const topWords = wordFreq.slice(0, 5);
                 topWords.forEach(item => {
@@ -2026,15 +2237,19 @@
             topCharsList.innerHTML = '';
             
             if (charFreq.length === 0) {
-                topCharsList.innerHTML = '<div class="most-used-item"><span class="most-used-text">لا توجد بيانات</span><span class="most-used-count">0</span></div>';
+                topCharsList.innerHTML = `<div class="most-used-item"><span class="most-used-text">${translations[currentLang].noData}</span><span class="most-used-count">0</span></div>`;
             } else {
                 const topChars = charFreq.slice(0, 5);
                 topChars.forEach(item => {
                     const charItem = document.createElement('div');
                     charItem.className = 'most-used-item';
-                    const displayChar = item.char === ' ' ? '[مسافة]' : 
-                                       item.char === '\n' ? '[سطر جديد]' : 
-                                       item.char === '\t' ? '[تبويب]' : item.char;
+                    const displayChar = item.char === ' ' ? 
+                        (currentLang === 'ar' ? '[مسافة]' : '[Space]') : 
+                        item.char === '\n' ? 
+                        (currentLang === 'ar' ? '[سطر جديد]' : '[Newline]') : 
+                        item.char === '\t' ? 
+                        (currentLang === 'ar' ? '[تبويب]' : '[Tab]') : 
+                        item.char;
                     charItem.innerHTML = `
                         <span class="most-used-text">${displayChar}</span>
                         <span class="most-used-count">${item.count}</span>
@@ -2130,6 +2345,7 @@
         // Export as PDF
         function exportAsPdf() {
             const text = textInput.value;
+            const currentLang = localStorage.getItem('language') || 'ar';
             
             if (!text.trim()) {
                 showNotification("يرجى إدخال بعض النص للتصدير", "warning");
@@ -2237,7 +2453,7 @@
                 
                 // حفظ الملف
                 doc.save('countfy-analysis-report.pdf');
-                showNotification(translations[localStorage.getItem('language') || 'ar'].exportSuccess, "success");
+                showNotification(translations[currentLang].exportSuccess, "success");
                 
             } catch (error) {
                 console.error('PDF export error:', error);
@@ -2248,6 +2464,7 @@
         // Export as CSV
         function exportAsCsv() {
             const text = textInput.value;
+            const currentLang = localStorage.getItem('language') || 'ar';
             
             if (!text.trim()) {
                 showNotification("يرجى إدخال بعض النص للتصدير", "warning");
@@ -2297,7 +2514,7 @@
                 wordItems.forEach(item => {
                     const word = item.querySelector('.most-used-text').textContent;
                     const count = item.querySelector('.most-used-count').textContent;
-                    if (word !== 'لا توجد بيانات') {
+                    if (word !== translations[currentLang].noData) {
                         csvContent += `"${word}",${count}\r\n`;
                     }
                 });
@@ -2311,7 +2528,7 @@
                 charItems.forEach(item => {
                     const char = item.querySelector('.most-used-text').textContent;
                     const count = item.querySelector('.most-used-count').textContent;
-                    if (char !== 'لا توجد بيانات') {
+                    if (char !== translations[currentLang].noData) {
                         csvContent += `"${char}",${count}\r\n`;
                     }
                 });
@@ -2333,7 +2550,7 @@
                 link.click();
                 document.body.removeChild(link);
                 
-                showNotification(translations[localStorage.getItem('language') || 'ar'].exportSuccess, "success");
+                showNotification(translations[currentLang].exportSuccess, "success");
                 
             } catch (error) {
                 console.error('CSV export error:', error);
@@ -2344,6 +2561,7 @@
         // Export as TXT
         function exportAsTxt() {
             const text = textInput.value;
+            const currentLang = localStorage.getItem('language') || 'ar';
             
             if (!text.trim()) {
                 showNotification("يرجى إدخال بعض النص للتصدير", "warning");
@@ -2377,7 +2595,7 @@
                 wordItems.forEach((item, index) => {
                     const word = item.querySelector('.most-used-text').textContent;
                     const count = item.querySelector('.most-used-count').textContent;
-                    if (word !== 'لا توجد بيانات') {
+                    if (word !== translations[currentLang].noData) {
                         txtContent += `${index + 1}. ${word} (${count} times)\n`;
                     }
                 });
@@ -2390,7 +2608,7 @@
                 charItems.forEach((item, index) => {
                     const char = item.querySelector('.most-used-text').textContent;
                     const count = item.querySelector('.most-used-count').textContent;
-                    if (char !== 'لا توجد بيانات') {
+                    if (char !== translations[currentLang].noData) {
                         txtContent += `${index + 1}. ${char} (${count} times)\n`;
                     }
                 });
@@ -2411,7 +2629,7 @@
                 link.click();
                 document.body.removeChild(link);
                 
-                showNotification(translations[localStorage.getItem('language') || 'ar'].exportSuccess, "success");
+                showNotification(translations[currentLang].exportSuccess, "success");
                 
             } catch (error) {
                 console.error('TXT export error:', error);
@@ -2467,10 +2685,10 @@
                         <span>${formattedDate}</span>
                     </div>
                     <div class="history-actions">
-                        <button class="history-action-btn" data-index="${index}" title="تحميل">
+                        <button class="history-action-btn" data-index="${index}" title="${currentLang === 'ar' ? 'تحميل' : 'Load'}">
                             <i class="fas fa-upload"></i>
                         </button>
-                        <button class="history-action-btn" data-index="${index}" title="حذف">
+                        <button class="history-action-btn" data-index="${index}" title="${currentLang === 'ar' ? 'حذف' : 'Delete'}">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -2536,36 +2754,8 @@
             localStorage.setItem('language', lang);
             languageSelect.value = lang;
             
-            // Update all text elements
-            document.getElementById('input-label').textContent = translations[lang].inputLabel;
-            document.getElementById('results-label').textContent = translations[lang].resultsLabel;
-            document.getElementById('format-text-label').textContent = translations[lang].formatTextLabel;
-            document.getElementById('copy-text-label').textContent = translations[lang].copyTextLabel;
-            document.getElementById('clear-text-label').textContent = translations[lang].clearTextLabel;
-            document.getElementById('count-text-label').textContent = translations[lang].countTextLabel;
-            document.getElementById('sample-text-label').textContent = translations[lang].sampleTextLabel;
-            document.getElementById('clear-history-label').textContent = translations[lang].clearHistoryLabel;
-            document.getElementById('history-label').textContent = translations[lang].historyLabel;
-            document.getElementById('characters-label').textContent = translations[lang].charactersLabel;
-            document.getElementById('words-label').textContent = translations[lang].wordsLabel;
-            document.getElementById('sentences-label').textContent = translations[lang].sentencesLabel;
-            document.getElementById('numbers-label').textContent = translations[lang].numbersLabel;
-            document.getElementById('punctuation-label').textContent = translations[lang].punctuationLabel;
-            document.getElementById('characters-no-spaces-label').textContent = translations[lang].charactersNoSpacesLabel;
-            document.getElementById('paragraphs-label').textContent = translations[lang].paragraphsLabel;
-            document.getElementById('reading-time-label').textContent = translations[lang].readingTimeLabel;
-            document.getElementById('most-used-label').textContent = translations[lang].mostUsedLabel;
-            document.getElementById('top-words-label').textContent = translations[lang].topWordsLabel;
-            document.getElementById('top-chars-label').textContent = translations[lang].topCharsLabel;
-            document.getElementById('seo-analysis-text').textContent = translations[lang].seoAnalysisText;
-            document.getElementById('readability-text').textContent = translations[lang].readabilityText;
-            document.getElementById('keyword-density-text').textContent = translations[lang].keywordDensityText;
-            document.getElementById('writing-time-text').textContent = translations[lang].writingTimeText;
-            
-            textInput.placeholder = translations[lang].inputPlaceholder;
-            
-            // Reload history to update "no history" message
-            loadHistory();
+            // Update all texts
+            updateAllTexts(lang);
         }
 
         // Show notification with type
