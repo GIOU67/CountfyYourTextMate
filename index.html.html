@@ -1,0 +1,2319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countfy - Advanced Text Analysis Tool</title>
+    <meta name="description" content="Professional text analysis tool with multi-language support, SEO analysis, readability scoring, and advanced writing insights.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-light: #eef2ff;
+            --secondary-color: #3a0ca3;
+            --accent-color: #4cc9f0;
+            --success-color: #4ade80;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --text-color: #1f2937;
+            --text-light: #6b7280;
+            --bg-color: #ffffff;
+            --card-bg: #f8fafc;
+            --border-color: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #5e72e4;
+            --primary-light: #1e1b4b;
+            --secondary-color: #825ee4;
+            --accent-color: #5ac8fa;
+            --success-color: #22c55e;
+            --warning-color: #eab308;
+            --error-color: #f87171;
+            --text-color: #f3f4f6;
+            --text-light: #9ca3af;
+            --bg-color: #111827;
+            --card-bg: #1f2937;
+            --border-color: #374151;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            line-height: 1.6;
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 15% 50%, rgba(67, 97, 238, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 85% 30%, rgba(76, 201, 240, 0.05) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.75rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary-light);
+            transform: rotate(15deg);
+        }
+
+        .language-selector {
+            position: relative;
+        }
+
+        .language-selector select {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 10px 40px 10px 15px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            appearance: none;
+            width: 160px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            box-shadow: var(--shadow);
+        }
+
+        .language-selector:after {
+            content: "▼";
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 0.7rem;
+            color: var(--text-light);
+        }
+
+        .language-selector select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+
+        .input-section, .results-section {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .input-section::before, .results-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        .input-section:hover, .results-section:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: var(--text-color);
+            font-weight: 700;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 i {
+            color: var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        /* Textarea */
+        .textarea-container {
+            position: relative;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 350px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            resize: vertical;
+            transition: var(--transition);
+            font-size: 16px;
+            line-height: 1.6;
+            font-family: 'Inter', sans-serif;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .char-counter {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            background: var(--card-bg);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 480px) {
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-accent {
+            background: var(--accent-color);
+            color: white;
+            box-shadow: var(--shadow);
+            grid-column: 1 / -1;
+        }
+
+        .btn-accent:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: var(--bg-color);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            font-weight: 500;
+            text-align: center;
+        }
+
+        /* Details Section */
+        .details-section {
+            margin-top: 25px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        @media (max-width: 480px) {
+            .details-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .detail-card {
+            background-color: var(--bg-color);
+            border-radius: var(--radius-sm);
+            padding: 18px 15px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            border: 1px solid transparent;
+        }
+
+        .detail-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+
+        .detail-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+
+        .detail-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* Most Used Section */
+        .most-used-section {
+            margin-top: 30px;
+        }
+
+        .most-used-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .most-used-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .most-used-card {
+            background-color: var(--bg-color);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid transparent;
+            transition: var(--transition);
+        }
+
+        .most-used-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+
+        .most-used-list {
+            margin-top: 10px;
+        }
+
+        .most-used-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .most-used-item:hover {
+            background-color: var(--primary-light);
+            margin: 0 -10px;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .most-used-item:last-child {
+            border-bottom: none;
+        }
+
+        .most-used-text {
+            font-weight: 500;
+        }
+
+        .most-used-count {
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Advanced Features */
+        .advanced-features {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background-color: var(--bg-color);
+            border-radius: var(--radius-sm);
+            padding: 25px 20px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: inline-block;
+            width: 70px;
+            height: 70px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .seo-score {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .score-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary-color) 0% 75%, var(--border-color) 75% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+
+        .score-circle::before {
+            content: '';
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--bg-color);
+            position: absolute;
+        }
+
+        .score-value {
+            position: relative;
+            z-index: 1;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        /* History Section */
+        .history-section {
+            margin-top: 50px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            box-shadow: var(--shadow);
+        }
+
+        .history-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-item:hover {
+            background-color: var(--primary-light);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-text {
+            flex: 1;
+            margin-right: 15px;
+            font-weight: 500;
+        }
+
+        .history-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .history-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .history-action-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 4px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .history-action-btn:hover {
+            background-color: var(--border-color);
+            color: var(--text-color);
+        }
+
+        /* Export Options */
+        .export-options {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            padding: 15px 25px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
+            transform: translateX(150%);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .notification.success {
+            background-color: var(--success-color);
+        }
+
+        .notification.error {
+            background-color: var(--error-color);
+        }
+
+        .notification.warning {
+            background-color: var(--warning-color);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease;
+        }
+
+        .slide-up {
+            animation: slideUp 0.5s ease;
+        }
+
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        .bounce {
+            animation: bounce 1s;
+        }
+
+        /* AdSense Container */
+        .ad-container {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            min-height: 90px;
+        }
+
+        .ad-placeholder {
+            width: 728px;
+            height: 90px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: var(--shadow);
+        }
+
+        @media (max-width: 768px) {
+            .ad-placeholder {
+                width: 320px;
+                height: 100px;
+            }
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            color: var(--primary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .language-selector select {
+                width: 140px;
+            }
+            
+            .input-section, .results-section {
+                padding: 20px;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .logo-icon {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .feature-card {
+                padding: 20px 15px;
+            }
+            
+            .score-circle {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .score-circle::before {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--card-bg);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+
+        /* Selection Styling */
+        ::selection {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Focus Styling */
+        button:focus, select:focus, textarea:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--text-color);
+            color: var(--bg-color);
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+            font-weight: normal;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            height: 6px;
+            background-color: var(--border-color);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <span>Countfy</span>
+            </a>
+            <div class="controls">
+                <div class="language-selector">
+                    <select id="language-select">
+                        <option value="en">English</option>
+                        <option value="ar">العربية</option>
+                        <option value="es">Español</option>
+                        <option value="de">Deutsch</option>
+                        <option value="it">Italiano</option>
+                        <option value="ru">Русский</option>
+                        <option value="zh">中文</option>
+                        <option value="ja">日本語</option>
+                        <option value="ko">한국어</option>
+                        <option value="hi">हिन्दी</option>
+                        <option value="fr">Français</option>
+                    </select>
+                </div>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- AdSense Banner -->
+        <div class="ad-container">
+            <div class="ad-placeholder">
+                AdSense Banner (728x90)
+            </div>
+        </div>
+
+        <main class="main-content">
+            <section class="input-section slide-up">
+                <h2><i class="fas fa-edit"></i> <span id="input-label">Enter your text</span></h2>
+                <div class="textarea-container">
+                    <textarea id="text-input" placeholder="Start typing or paste your text here..."></textarea>
+                    <div class="char-counter"><span id="real-time-count">0</span> characters</div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn-primary" id="count-btn">
+                        <i class="fas fa-calculator"></i>
+                        <span id="count-text-label">Analyze Text</span>
+                    </button>
+                    <button class="btn-primary" id="format-text">
+                        <i class="fas fa-magic"></i>
+                        <span id="format-text-label">Format Text</span>
+                    </button>
+                    <button class="btn-secondary" id="copy-text">
+                        <i class="fas fa-copy"></i>
+                        <span id="copy-text-label">Copy Text</span>
+                    </button>
+                    <button class="btn-secondary" id="clear-text">
+                        <i class="fas fa-trash"></i>
+                        <span id="clear-text-label">Clear</span>
+                    </button>
+                    <button class="btn-accent" id="sample-btn">
+                        <i class="fas fa-lightbulb"></i>
+                        <span id="sample-text-label">Load Sample Text</span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="results-section fade-in">
+                <h2><i class="fas fa-chart-pie"></i> <span id="results-label">Analysis Results</span></h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="char-count">0</div>
+                        <div class="stat-label" id="characters-label">Characters</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="word-count">0</div>
+                        <div class="stat-label" id="words-label">Words</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="sentence-count">0</div>
+                        <div class="stat-label" id="sentences-label">Sentences</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="number-count">0</div>
+                        <div class="stat-label" id="numbers-label">Numbers</div>
+                    </div>
+                </div>
+
+                <div class="details-section">
+                    <div class="detail-card">
+                        <div class="detail-value" id="char-no-spaces">0</div>
+                        <div class="detail-label" id="characters-no-spaces-label">Characters (no spaces)</div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-value" id="punctuation-count">0</div>
+                        <div class="detail-label" id="punctuation-label">Punctuation Marks</div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-value" id="paragraph-count">0</div>
+                        <div class="detail-label" id="paragraphs-label">Paragraphs</div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-value" id="reading-time">0 min</div>
+                        <div class="detail-label" id="reading-time-label">Reading Time</div>
+                    </div>
+                </div>
+
+                <!-- Most Used Section -->
+                <div class="most-used-section">
+                    <h3><i class="fas fa-chart-bar"></i> <span id="most-used-label">Most Used</span></h3>
+                    <div class="most-used-grid">
+                        <div class="most-used-card">
+                            <h4 id="top-words-label">Top 5 Words</h4>
+                            <div class="most-used-list" id="top-words-list">
+                                <div class="most-used-item">
+                                    <span class="most-used-text">No data</span>
+                                    <span class="most-used-count">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="most-used-card">
+                            <h4 id="top-chars-label">Top 5 Characters</h4>
+                            <div class="most-used-list" id="top-chars-list">
+                                <div class="most-used-item">
+                                    <span class="most-used-text">No data</span>
+                                    <span class="most-used-count">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Features -->
+                <div class="advanced-features">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>SEO Analysis</h3>
+                        <p id="seo-analysis-text">Optimize your content for search engines</p>
+                        <div class="seo-score">
+                            <div class="score-circle">
+                                <div class="score-value" id="seo-score">0%</div>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" id="seo-progress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>Readability Score</h3>
+                        <p id="readability-text">Check how easy your text is to read</p>
+                        <div class="stat-value" id="readability-score">0%</div>
+                        <div class="progress-bar">
+                            <div class="progress" id="readability-progress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Keyword Density</h3>
+                        <p id="keyword-density-text">Analyze keyword usage in your text</p>
+                        <div class="stat-value" id="keyword-density">0%</div>
+                        <div class="progress-bar">
+                            <div class="progress" id="keyword-progress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-stopwatch"></i>
+                        </div>
+                        <h3>Writing Time</h3>
+                        <p id="writing-time-text">Estimate how long it takes to write</p>
+                        <div class="stat-value" id="writing-time">0 min</div>
+                        <div class="progress-bar">
+                            <div class="progress" id="writing-progress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="export-options">
+                    <button class="btn-secondary" id="export-pdf">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Export as PDF</span>
+                    </button>
+                    <button class="btn-secondary" id="export-csv">
+                        <i class="fas fa-file-csv"></i>
+                        <span>Export as CSV</span>
+                    </button>
+                    <button class="btn-secondary" id="export-txt">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Export as TXT</span>
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <section class="history-section fade-in">
+            <div class="history-header">
+                <h2><i class="fas fa-history"></i> <span id="history-label">Text History</span></h2>
+                <button class="btn-secondary" id="clear-history">
+                    <i class="fas fa-broom"></i>
+                    <span id="clear-history-label">Clear History</span>
+                </button>
+            </div>
+            <div class="history-list" id="history-list">
+                <div class="history-item">
+                    <div class="history-text" id="no-history-text">No history yet. Analyze some text to see your history here.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AdSense Banner -->
+        <div class="ad-container">
+            <div class="ad-placeholder">
+                AdSense Banner (728x90)
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2023 Countfy - Advanced Text Analysis Tool. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Contact Us</a>
+                <a href="#" class="footer-link">Feedback</a>
+            </div>
+        </footer>
+    </div>
+
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span>Operation completed successfully!</span>
+    </div>
+
+    <script>
+        // Extensive translation data for 11 languages
+        const translations = {
+            en: {
+                // App
+                appName: "Countfy",
+                
+                // Input Section
+                inputLabel: "Enter your text",
+                inputPlaceholder: "Start typing or paste your text here...",
+                
+                // Results Section
+                resultsLabel: "Analysis Results",
+                charactersLabel: "Characters",
+                wordsLabel: "Words",
+                sentencesLabel: "Sentences",
+                numbersLabel: "Numbers",
+                punctuationLabel: "Punctuation Marks",
+                charactersNoSpacesLabel: "Characters (no spaces)",
+                paragraphsLabel: "Paragraphs",
+                readingTimeLabel: "Reading Time",
+                
+                // Buttons
+                formatTextLabel: "Format Text",
+                copyTextLabel: "Copy Text",
+                clearTextLabel: "Clear",
+                countTextLabel: "Analyze Text",
+                sampleTextLabel: "Load Sample Text",
+                clearHistoryLabel: "Clear History",
+                
+                // History
+                historyLabel: "Text History",
+                noHistory: "No history yet. Analyze some text to see your history here.",
+                
+                // Notifications
+                copySuccess: "Text copied to clipboard!",
+                clearSuccess: "Text cleared!",
+                formatSuccess: "Text formatted!",
+                countSuccess: "Text analyzed successfully!",
+                sampleSuccess: "Sample text loaded!",
+                exportSuccess: "Export completed!",
+                clearHistorySuccess: "History cleared!",
+                
+                // Time units
+                minute: "min",
+                second: "sec",
+                
+                // Most Used
+                mostUsedLabel: "Most Used",
+                topWordsLabel: "Top 5 Words",
+                topCharsLabel: "Top 5 Characters",
+                
+                // Advanced Features
+                seoAnalysisText: "Optimize your content for search engines",
+                readabilityText: "Check how easy your text is to read",
+                keywordDensityText: "Analyze keyword usage in your text",
+                writingTimeText: "Estimate how long it takes to write"
+            },
+            ar: {
+                appName: "Countfy",
+                inputLabel: "أدخل النص الخاص بك",
+                inputPlaceholder: "ابدأ في الكتابة أو الصق النص الخاص بك هنا...",
+                resultsLabel: "نتائج التحليل",
+                charactersLabel: "الأحرف",
+                wordsLabel: "الكلمات",
+                sentencesLabel: "الجمل",
+                numbersLabel: "الأرقام",
+                punctuationLabel: "علامات الترقيم",
+                charactersNoSpacesLabel: "الأحرف (بدون مسافات)",
+                paragraphsLabel: "الفقرات",
+                readingTimeLabel: "وقت القراءة",
+                formatTextLabel: "تنسيق النص",
+                copyTextLabel: "نسخ النص",
+                clearTextLabel: "مسح",
+                countTextLabel: "تحليل النص",
+                sampleTextLabel: "تحميل نص تجريبي",
+                clearHistoryLabel: "مسح السجل",
+                historyLabel: "سجل النصوص",
+                noHistory: "لا يوجد سجل حتى الآن. قم بتحليل بعض النصوص لرؤية السجل هنا.",
+                copySuccess: "تم نسخ النص إلى الحافظة!",
+                clearSuccess: "تم مسح النص!",
+                formatSuccess: "تم تنسيق النص!",
+                countSuccess: "تم تحليل النص بنجاح!",
+                sampleSuccess: "تم تحميل النص التجريبي!",
+                exportSuccess: "تم التصدير بنجاح!",
+                clearHistorySuccess: "تم مسح السجل!",
+                minute: "دقيقة",
+                second: "ثانية",
+                mostUsedLabel: "الأكثر استخداماً",
+                topWordsLabel: "أكثر 5 كلمات",
+                topCharsLabel: "أكثر 5 أحرف",
+                seoAnalysisText: "حسن محتواك لمحركات البحث",
+                readabilityText: "تحقق من مدى سهولة قراءة النص",
+                keywordDensityText: "حلل كثافة الكلمات المفتاحية في النص",
+                writingTimeText: "تقدير الوقت اللازم للكتابة"
+            },
+            es: {
+                appName: "Countfy",
+                inputLabel: "Ingresa tu texto",
+                inputPlaceholder: "Comienza a escribir o pega tu texto aquí...",
+                resultsLabel: "Resultados del Análisis",
+                charactersLabel: "Caracteres",
+                wordsLabel: "Palabras",
+                sentencesLabel: "Oraciones",
+                numbersLabel: "Números",
+                punctuationLabel: "Signos de Puntuación",
+                charactersNoSpacesLabel: "Caracteres (sin espacios)",
+                paragraphsLabel: "Párrafos",
+                readingTimeLabel: "Tiempo de Lectura",
+                formatTextLabel: "Formatear Texto",
+                copyTextLabel: "Copiar Texto",
+                clearTextLabel: "Limpiar",
+                countTextLabel: "Analizar Texto",
+                sampleTextLabel: "Cargar Texto de Ejemplo",
+                clearHistoryLabel: "Limpiar Historial",
+                historyLabel: "Historial de Textos",
+                noHistory: "Aún no hay historial. Analiza algún texto para ver tu historial aquí.",
+                copySuccess: "¡Texto copiado al portapapeles!",
+                clearSuccess: "¡Texto limpiado!",
+                formatSuccess: "¡Texto formateado!",
+                countSuccess: "¡Texto analizado con éxito!",
+                sampleSuccess: "¡Texto de ejemplo cargado!",
+                exportSuccess: "¡Exportación completada!",
+                clearHistorySuccess: "¡Historial limpiado!",
+                minute: "min",
+                second: "seg",
+                mostUsedLabel: "Más Usados",
+                topWordsLabel: "Top 5 Palabras",
+                topCharsLabel: "Top 5 Caracteres",
+                seoAnalysisText: "Optimiza tu contenido para motores de búsqueda",
+                readabilityText: "Comprueba qué tan fácil es leer tu texto",
+                keywordDensityText: "Analiza el uso de palabras clave en tu texto",
+                writingTimeText: "Estima cuánto tiempo lleva escribir"
+            },
+            de: {
+                appName: "Countfy",
+                inputLabel: "Geben Sie Ihren Text ein",
+                inputPlaceholder: "Beginnen Sie mit der Eingabe oder fügen Sie Ihren Text hier ein...",
+                resultsLabel: "Analyseergebnisse",
+                charactersLabel: "Zeichen",
+                wordsLabel: "Wörter",
+                sentencesLabel: "Sätze",
+                numbersLabel: "Zahlen",
+                punctuationLabel: "Satzzeichen",
+                charactersNoSpacesLabel: "Zeichen (ohne Leerzeichen)",
+                paragraphsLabel: "Absätze",
+                readingTimeLabel: "Lesezeit",
+                formatTextLabel: "Text formatieren",
+                copyTextLabel: "Text kopieren",
+                clearTextLabel: "Löschen",
+                countTextLabel: "Text analysieren",
+                sampleTextLabel: "Beispieltext laden",
+                clearHistoryLabel: "Verlauf löschen",
+                historyLabel: "Textverlauf",
+                noHistory: "Noch kein Verlauf vorhanden. Analysieren Sie einen Text, um Ihren Verlauf hier zu sehen.",
+                copySuccess: "Text in die Zwischenablage kopiert!",
+                clearSuccess: "Text gelöscht!",
+                formatSuccess: "Text formatiert!",
+                countSuccess: "Text erfolgreich analysiert!",
+                sampleSuccess: "Beispieltext geladen!",
+                exportSuccess: "Export abgeschlossen!",
+                clearHistorySuccess: "Verlauf gelöscht!",
+                minute: "Min",
+                second: "Sek",
+                mostUsedLabel: "Am häufigsten verwendet",
+                topWordsLabel: "Top 5 Wörter",
+                topCharsLabel: "Top 5 Zeichen",
+                seoAnalysisText: "Optimieren Sie Ihre Inhalte für Suchmaschinen",
+                readabilityText: "Prüfen Sie, wie leicht Ihr Text zu lesen ist",
+                keywordDensityText: "Analysieren Sie die Schlüsselwortnutzung in Ihrem Text",
+                writingTimeText: "Schätzen Sie, wie lange das Schreiben dauert"
+            },
+            it: {
+                appName: "Countfy",
+                inputLabel: "Inserisci il tuo testo",
+                inputPlaceholder: "Inizia a digitare o incolla il tuo testo qui...",
+                resultsLabel: "Risultati dell'Analisi",
+                charactersLabel: "Caratteri",
+                wordsLabel: "Parole",
+                sentencesLabel: "Frasi",
+                numbersLabel: "Numeri",
+                punctuationLabel: "Segni di Punteggiatura",
+                charactersNoSpacesLabel: "Caratteri (senza spazi)",
+                paragraphsLabel: "Paragrafi",
+                readingTimeLabel: "Tempo di Lettura",
+                formatTextLabel: "Formatta Testo",
+                copyTextLabel: "Copia Testo",
+                clearTextLabel: "Cancella",
+                countTextLabel: "Analizza Testo",
+                sampleTextLabel: "Carica Testo Campione",
+                clearHistoryLabel: "Cancella Cronologia",
+                historyLabel: "Cronologia Testi",
+                noHistory: "Ancora nessuna cronologia. Analizza un testo per vedere la tua cronologia qui.",
+                copySuccess: "Testo copiato negli appunti!",
+                clearSuccess: "Testo cancellato!",
+                formatSuccess: "Testo formattato!",
+                countSuccess: "Testo analizzato con successo!",
+                sampleSuccess: "Testo campione caricato!",
+                exportSuccess: "Esportazione completata!",
+                clearHistorySuccess: "Cronologia cancellata!",
+                minute: "min",
+                second: "sec",
+                mostUsedLabel: "Più Usati",
+                topWordsLabel: "Top 5 Parole",
+                topCharsLabel: "Top 5 Caratteri",
+                seoAnalysisText: "Ottimizza i tuoi contenuti per i motori di ricerca",
+                readabilityText: "Controlla quanto è facile leggere il tuo testo",
+                keywordDensityText: "Analizza l'uso delle parole chiave nel tuo testo",
+                writingTimeText: "Stima quanto tempo ci vuole per scrivere"
+            },
+            ru: {
+                appName: "Countfy",
+                inputLabel: "Введите ваш текст",
+                inputPlaceholder: "Начните печатать или вставьте ваш текст здесь...",
+                resultsLabel: "Результаты анализа",
+                charactersLabel: "Символы",
+                wordsLabel: "Слова",
+                sentencesLabel: "Предложения",
+                numbersLabel: "Цифры",
+                punctuationLabel: "Знаки препинания",
+                charactersNoSpacesLabel: "Символы (без пробелов)",
+                paragraphsLabel: "Абзацы",
+                readingTimeLabel: "Время чтения",
+                formatTextLabel: "Форматировать текст",
+                copyTextLabel: "Копировать текст",
+                clearTextLabel: "Очистить",
+                countTextLabel: "Анализировать текст",
+                sampleTextLabel: "Загрузить пример текста",
+                clearHistoryLabel: "Очистить историю",
+                historyLabel: "История текстов",
+                noHistory: "Истории пока нет. Проанализируйте текст, чтобы увидеть вашу историю здесь.",
+                copySuccess: "Текст скопирован в буфер обмена!",
+                clearSuccess: "Текст очищен!",
+                formatSuccess: "Текст отформатирован!",
+                countSuccess: "Текст успешно проанализирован!",
+                sampleSuccess: "Пример текста загружен!",
+                exportSuccess: "Экспорт завершен!",
+                clearHistorySuccess: "История очищена!",
+                minute: "мин",
+                second: "сек",
+                mostUsedLabel: "Наиболее используемые",
+                topWordsLabel: "Топ 5 слов",
+                topCharsLabel: "Топ 5 символов",
+                seoAnalysisText: "Оптимизируйте ваш контент для поисковых систем",
+                readabilityText: "Проверьте, насколько легко читать ваш текст",
+                keywordDensityText: "Проанализируйте использование ключевых слов в вашем тексте",
+                writingTimeText: "Оцените, сколько времени займет написание"
+            },
+            zh: {
+                appName: "Countfy",
+                inputLabel: "输入您的文本",
+                inputPlaceholder: "开始输入或在此处粘贴您的文本...",
+                resultsLabel: "分析结果",
+                charactersLabel: "字符",
+                wordsLabel: "单词",
+                sentencesLabel: "句子",
+                numbersLabel: "数字",
+                punctuationLabel: "标点符号",
+                charactersNoSpacesLabel: "字符（无空格）",
+                paragraphsLabel: "段落",
+                readingTimeLabel: "阅读时间",
+                formatTextLabel: "格式化文本",
+                copyTextLabel: "复制文本",
+                clearTextLabel: "清除",
+                countTextLabel: "分析文本",
+                sampleTextLabel: "加载示例文本",
+                clearHistoryLabel: "清除历史",
+                historyLabel: "文本历史",
+                noHistory: "暂无历史记录。分析一些文本以在此处查看您的历史记录。",
+                copySuccess: "文本已复制到剪贴板！",
+                clearSuccess: "文本已清除！",
+                formatSuccess: "文本已格式化！",
+                countSuccess: "文本分析成功！",
+                sampleSuccess: "示例文本已加载！",
+                exportSuccess: "导出完成！",
+                clearHistorySuccess: "历史记录已清除！",
+                minute: "分钟",
+                second: "秒",
+                mostUsedLabel: "最常用",
+                topWordsLabel: "前5个单词",
+                topCharsLabel: "前5个字符",
+                seoAnalysisText: "优化您的内容以用于搜索引擎",
+                readabilityText: "检查您的文本阅读难度",
+                keywordDensityText: "分析文本中的关键词使用情况",
+                writingTimeText: "估计写作所需时间"
+            },
+            ja: {
+                appName: "Countfy",
+                inputLabel: "テキストを入力してください",
+                inputPlaceholder: "入力を開始するか、テキストをここに貼り付けてください...",
+                resultsLabel: "分析結果",
+                charactersLabel: "文字数",
+                wordsLabel: "単語数",
+                sentencesLabel: "文数",
+                numbersLabel: "数字",
+                punctuationLabel: "句読点",
+                charactersNoSpacesLabel: "文字数（スペースなし）",
+                paragraphsLabel: "段落数",
+                readingTimeLabel: "読了時間",
+                formatTextLabel: "テキストをフォーマット",
+                copyTextLabel: "テキストをコピー",
+                clearTextLabel: "クリア",
+                countTextLabel: "テキストを分析",
+                sampleTextLabel: "サンプルテキストを読み込む",
+                clearHistoryLabel: "履歴をクリア",
+                historyLabel: "テキスト履歴",
+                noHistory: "履歴はまだありません。テキストを分析して、ここに履歴を表示してください。",
+                copySuccess: "テキストがクリップボードにコピーされました！",
+                clearSuccess: "テキストがクリアされました！",
+                formatSuccess: "テキストがフォーマットされました！",
+                countSuccess: "テキストが正常に分析されました！",
+                sampleSuccess: "サンプルテキストが読み込まれました！",
+                exportSuccess: "エクスポートが完了しました！",
+                clearHistorySuccess: "履歴がクリアされました！",
+                minute: "分",
+                second: "秒",
+                mostUsedLabel: "最も使用された",
+                topWordsLabel: "トップ5単語",
+                topCharsLabel: "トップ5文字",
+                seoAnalysisText: "検索エンジン向けにコンテンツを最適化する",
+                readabilityText: "テキストの読みやすさを確認する",
+                keywordDensityText: "テキスト内のキーワード使用状況を分析する",
+                writingTimeText: "執筆にかかる時間を推定する"
+            },
+            ko: {
+                appName: "Countfy",
+                inputLabel: "텍스트를 입력하세요",
+                inputPlaceholder: "여기에 입력을 시작하거나 텍스트를 붙여넣으세요...",
+                resultsLabel: "분석 결과",
+                charactersLabel: "문자 수",
+                wordsLabel: "단어 수",
+                sentencesLabel: "문장 수",
+                numbersLabel: "숫자",
+                punctuationLabel: "구두점",
+                charactersNoSpacesLabel: "문자 수 (공백 제외)",
+                paragraphsLabel: "단락 수",
+                readingTimeLabel: "읽는 시간",
+                formatTextLabel: "텍스트 서식 지정",
+                copyTextLabel: "텍스트 복사",
+                clearTextLabel: "지우기",
+                countTextLabel: "텍스트 분석",
+                sampleTextLabel: "샘플 텍스트 로드",
+                clearHistoryLabel: "기록 지우기",
+                historyLabel: "텍스트 기록",
+                noHistory: "아직 기록이 없습니다. 텍스트를 분석하여 여기에 기록을 보세요.",
+                copySuccess: "텍스트가 클립보드에 복사되었습니다!",
+                clearSuccess: "텍스트가 지워졌습니다!",
+                formatSuccess: "텍스트가 서식 지정되었습니다!",
+                countSuccess: "텍스트가 성공적으로 분석되었습니다!",
+                sampleSuccess: "샘플 텍스트가 로드되었습니다!",
+                exportSuccess: "내보내기가 완료되었습니다!",
+                clearHistorySuccess: "기록이 지워졌습니다!",
+                minute: "분",
+                second: "초",
+                mostUsedLabel: "가장 많이 사용된",
+                topWordsLabel: "상위 5개 단어",
+                topCharsLabel: "상위 5개 문자",
+                seoAnalysisText: "검색 엔진에 맞게 콘텐츠 최적화",
+                readabilityText: "텍스트의 가독성 확인",
+                keywordDensityText: "텍스트 내 키워드 사용량 분석",
+                writingTimeText: "작성하는 데 걸리는 시간 추정"
+            },
+            hi: {
+                appName: "Countfy",
+                inputLabel: "अपना पाठ दर्ज करें",
+                inputPlaceholder: "यहाँ टाइप करना शुरू करें या अपना पाठ पेस्ट करें...",
+                resultsLabel: "विश्लेषण परिणाम",
+                charactersLabel: "अक्षर",
+                wordsLabel: "शब्द",
+                sentencesLabel: "वाक्य",
+                numbersLabel: "अंक",
+                punctuationLabel: "विराम चिह्न",
+                charactersNoSpacesLabel: "अक्षर (रिक्त स्थान के बिना)",
+                paragraphsLabel: "अनुच्छेद",
+                readingTimeLabel: "पढ़ने का समय",
+                formatTextLabel: "पाठ स्वरूपित करें",
+                copyTextLabel: "पाठ कॉपी करें",
+                clearTextLabel: "साफ करें",
+                countTextLabel: "पाठ विश्लेषण",
+                sampleTextLabel: "नमूना पाठ लोड करें",
+                clearHistoryLabel: "इतिहास साफ करें",
+                historyLabel: "पाठ इतिहास",
+                noHistory: "अभी तक कोई इतिहास नहीं है। अपना इतिहास देखने के लिए कुछ पाठ विश्लेषित करें।",
+                copySuccess: "पाठ क्लिपबोर्ड पर कॉपी किया गया!",
+                clearSuccess: "पाठ साफ किया गया!",
+                formatSuccess: "पाठ स्वरूपित किया गया!",
+                countSuccess: "पाठ सफलतापूर्वक विश्लेषित किया गया!",
+                sampleSuccess: "नमूना पाठ लोड किया गया!",
+                exportSuccess: "निर्यात पूरा हुआ!",
+                clearHistorySuccess: "इतिहास साफ किया गया!",
+                minute: "मिनट",
+                second: "सेकंड",
+                mostUsedLabel: "सबसे अधिक इस्तेमाल किए गए",
+                topWordsLabel: "शीर्ष 5 शब्द",
+                topCharsLabel: "शीर्ष 5 अक्षर",
+                seoAnalysisText: "खोज इंजन के लिए अपनी सामग्री को अनुकूलित करें",
+                readabilityText: "जांचें कि आपका पाठ कितना आसानी से पढ़ा जा सकता है",
+                keywordDensityText: "अपने पाठ में कीवर्ड के उपयोग का विश्लेषण करें",
+                writingTimeText: "लिखने में कितना समय लगेगा इसका अनुमान लगाएं"
+            },
+            fr: {
+                appName: "Countfy",
+                inputLabel: "Entrez votre texte",
+                inputPlaceholder: "Commencez à taper ou collez votre texte ici...",
+                resultsLabel: "Résultats de l'analyse",
+                charactersLabel: "Caractères",
+                wordsLabel: "Mots",
+                sentencesLabel: "Phrases",
+                numbersLabel: "Chiffres",
+                punctuationLabel: "Signes de ponctuation",
+                charactersNoSpacesLabel: "Caractères (sans espaces)",
+                paragraphsLabel: "Paragraphes",
+                readingTimeLabel: "Temps de lecture",
+                formatTextLabel: "Formatter le texte",
+                copyTextLabel: "Copier le texte",
+                clearTextLabel: "Effacer",
+                countTextLabel: "Analyser le texte",
+                sampleTextLabel: "Charger un exemple de texte",
+                clearHistoryLabel: "Effacer l'historique",
+                historyLabel: "Historique des textes",
+                noHistory: "Aucun historique pour le moment. Analysez du texte pour voir votre historique ici.",
+                copySuccess: "Texte copié dans le presse-papiers !",
+                clearSuccess: "Texte effacé !",
+                formatSuccess: "Texte formaté !",
+                countSuccess: "Texte analysé avec succès !",
+                sampleSuccess: "Exemple de texte chargé !",
+                exportSuccess: "Exportation terminée !",
+                clearHistorySuccess: "Historique effacé !",
+                minute: "min",
+                second: "sec",
+                mostUsedLabel: "Les plus utilisés",
+                topWordsLabel: "Top 5 des mots",
+                topCharsLabel: "Top 5 des caractères",
+                seoAnalysisText: "Optimisez votre contenu pour les moteurs de recherche",
+                readabilityText: "Vérifiez la facilité de lecture de votre texte",
+                keywordDensityText: "Analysez l'utilisation des mots-clés dans votre texte",
+                writingTimeText: "Estimez le temps nécessaire pour écrire"
+            }
+        };
+
+        // Sample texts for each language
+        const sampleTexts = {
+            en: "Welcome to Countfy! This is a sample text to demonstrate the powerful features of our text analysis tool. You can analyze any text to get detailed statistics about characters, words, sentences, and more. Countfy also provides advanced insights like SEO optimization, readability scores, and keyword density analysis. Whether you're a writer, student, or professional, Countfy helps you improve your writing and optimize your content for better engagement. Try analyzing this text to see all the features in action!",
+            ar: "مرحبًا بكم في Countfy! هذا نص تجريبي لتوضيح الميزات القوية لأداة تحليل النصوص الخاصة بنا. يمكنك تحليل أي نص للحصول على إحصائيات مفصلة حول الأحرف والكلمات والجمل وغير ذلك. يوفر Countfy أيضًا رؤى متقدمة مثل تحسين محركات البحث ودرجات قابلية القراءة وتحليل كثافة الكلمات الرئيسية. سواء كنت كاتبًا أو طالبًا أو محترفًا، يساعدك Countfy في تحسين كتابتك وتحسين محتواك لتحقيق مشاركة أفضل. جرب تحليل هذا النص لرؤية جميع الميزات في العمل!",
+            es: "¡Bienvenido a Countfy! Este es un texto de ejemplo para demostrar las poderosas características de nuestra herramienta de análisis de texto. Puede analizar cualquier texto para obtener estadísticas detalladas sobre caracteres, palabras, oraciones y más. Countfy también proporciona información avanzada como optimización SEO, puntajes de legibilidad y análisis de densidad de palabras clave. Ya sea que sea escritor, estudiante o profesional, Countfy lo ayuda a mejorar su escritura y optimizar su contenido para una mejor participación. ¡Pruebe a analizar este texto para ver todas las funciones en acción!",
+            de: "Willkommen bei Countfy! Dies ist ein Beispieltext, um die leistungsstarken Funktionen unseres Textanalyse-Tools zu demonstrieren. Sie können jeden Text analysieren, um detaillierte Statistiken zu Zeichen, Wörtern, Sätzen und mehr zu erhalten. Countfy bietet auch erweiterte Einblicke wie SEO-Optimierung, Lesbarkeitsbewertungen und Keyword-Dichte-Analyse. Egal, ob Sie Schriftsteller, Student oder Fachkraft sind, Countfy hilft Ihnen, Ihr Schreiben zu verbessern und Ihre Inhalte für ein besseres Engagement zu optimieren. Versuchen Sie, diesen Text zu analysieren, um alle Funktionen in Aktion zu sehen!",
+            it: "Benvenuto in Countfy! Questo è un testo di esempio per dimostrare le potenti funzionalità del nostro strumento di analisi del testo. Puoi analizzare qualsiasi testo per ottenere statistiche dettagliate su caratteri, parole, frasi e altro. Countfy fornisce anche approfondimenti avanzati come l'ottimizzazione SEO, i punteggi di leggibilità e l'analisi della densità delle parole chiave. Che tu sia uno scrittore, uno studente o un professionista, Countfy ti aiuta a migliorare la tua scrittura e ottimizzare i tuoi contenuti per un migliore coinvolgimento. Prova ad analizzare questo testo per vedere tutte le funzionalità in azione!",
+            ru: "Добро пожаловать в Countfy! Это пример текста, демонстрирующий мощные функции нашего инструмента анализа текста. Вы можете анализировать любой текст, чтобы получить подробную статистику о символах, словах, предложениях и многом другом. Countfy также предоставляет расширенную аналитику, такую как SEO-оптимизация, оценки читабельности и анализ плотности ключевых слов. Независимо от того, являетесь ли вы писателем, студентом или профессионалом, Countfy поможет вам улучшить ваше письмо и оптимизировать ваш контент для лучшего вовлечения. Попробуйте проанализировать этот текст, чтобы увидеть все функции в действии!",
+            zh: "欢迎使用 Countfy！这是一个示例文本，用于展示我们文本分析工具的强大功能。您可以分析任何文本以获取有关字符、单词、句子等的详细统计信息。Countfy 还提供高级分析，如 SEO 优化、可读性评分和关键词密度分析。无论您是作家、学生还是专业人士，Countfy 都能帮助您改进写作并优化内容以获得更好的参与度。尝试分析此文本以查看所有功能的作用！",
+            ja: "Countfyへようこそ！これは、私たちのテキスト分析ツールの強力な機能を実証するためのサンプルテキストです。任意のテキストを分析して、文字、単語、文などの詳細な統計を取得できます。Countfyは、SEO最適化、読みやすさのスコア、キーワード密度分析などの高度な分析も提供します。作家、学生、プロフェッショナルを問わず、Countfyはライティングの改善とコンテンツの最適化を支援し、より良いエンゲージメントを実現します。このテキストを分析して、すべての機能の動作を確認してみてください！",
+            ko: "Countfy에 오신 것을 환영합니다! 이것은 우리의 텍스트 분석 도구의 강력한 기능을 보여주는 샘플 텍스트입니다. 문자, 단어, 문장 등에 대한 자세한 통계를 얻기 위해 모든 텍스트를 분석할 수 있습니다. Countfy는 또한 SEO 최적화, 가독성 점수 및 키워드 밀도 분석과 같은 고급 인사이트를 제공합니다. 작가, 학생 또는 전문가이든 관계없이 Countfy는 더 나은 참여를 위해 글쓰기를 개선하고 콘텐츠를 최적화하는 데 도움을 줍니다. 이 텍스트를 분석하여 모든 기능이 작동하는 것을 확인해 보세요!",
+            hi: "Countfy में आपका स्वागत है! यह हमारे टेक्स्ट विश्लेषण टूल की शक्तिशाली सुविधाओं को प्रदर्शित करने के लिए एक नमूना पाठ है। आप अक्षरों, शब्दों, वाक्यों और बहुत कुछ के बारे में विस्तृत आंकड़े प्राप्त करने के लिए किसी भी पाठ का विश्लेषण कर सकते हैं। Countfy उन्नत अंतर्दृष्टि भी प्रदान करता है जैसे एसईओ अनुकूलन, पठनीयता स्कोर और कीवर्ड घनत्व विश्लेषण। चाहे आप लेखक, छात्र हों या पेशेवर, Countfy बेहतर सगाई के लिए आपकी लेखन को बेहतर बनाने और आपकी सामग्री को अनुकूलित करने में आपकी सहायता करता है। सभी सुविधाओं को कार्यरत देखने के लिए इस पाठ का विश्लेषण करने का प्रयास करें!",
+            fr: "Bienvenue dans Countfy ! Ceci est un exemple de texte pour démontrer les fonctionnalités puissantes de notre outil d'analyse de texte. Vous pouvez analyser n'importe quel texte pour obtenir des statistiques détaillées sur les caractères, les mots, les phrases et plus encore. Countfy fournit également des informations avancées telles que l'optimisation SEO, les scores de lisibilité et l'analyse de la densité des mots-clés. Que vous soyez écrivain, étudiant ou professionnel, Countfy vous aide à améliorer votre écriture et à optimiser votre contenu pour un meilleur engagement. Essayez d'analyser ce texte pour voir toutes les fonctionnalités en action !"
+        };
+
+        // DOM elements
+        const textInput = document.getElementById('text-input');
+        const realTimeCount = document.getElementById('real-time-count');
+        const charCount = document.getElementById('char-count');
+        const wordCount = document.getElementById('word-count');
+        const sentenceCount = document.getElementById('sentence-count');
+        const numberCount = document.getElementById('number-count');
+        const punctuationCount = document.getElementById('punctuation-count');
+        const charNoSpaces = document.getElementById('char-no-spaces');
+        const paragraphCount = document.getElementById('paragraph-count');
+        const readingTime = document.getElementById('reading-time');
+        const seoScore = document.getElementById('seo-score');
+        const readabilityScore = document.getElementById('readability-score');
+        const keywordDensity = document.getElementById('keyword-density');
+        const writingTime = document.getElementById('writing-time');
+        const topWordsList = document.getElementById('top-words-list');
+        const topCharsList = document.getElementById('top-chars-list');
+        const countBtn = document.getElementById('count-btn');
+        const formatTextBtn = document.getElementById('format-text');
+        const copyTextBtn = document.getElementById('copy-text');
+        const clearTextBtn = document.getElementById('clear-text');
+        const sampleBtn = document.getElementById('sample-btn');
+        const exportPdfBtn = document.getElementById('export-pdf');
+        const exportCsvBtn = document.getElementById('export-csv');
+        const exportTxtBtn = document.getElementById('export-txt');
+        const clearHistoryBtn = document.getElementById('clear-history');
+        const historyList = document.getElementById('history-list');
+        const themeToggle = document.getElementById('theme-toggle');
+        const languageSelect = document.getElementById('language-select');
+        const notification = document.getElementById('notification');
+
+        // Progress bars
+        const seoProgress = document.getElementById('seo-progress');
+        const readabilityProgress = document.getElementById('readability-progress');
+        const keywordProgress = document.getElementById('keyword-progress');
+        const writingProgress = document.getElementById('writing-progress');
+
+        // Initialize the app
+        function init() {
+            // Set initial theme
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            setTheme(savedTheme);
+            
+            // Set initial language
+            const savedLanguage = localStorage.getItem('language') || 'en';
+            setLanguage(savedLanguage);
+            
+            // Load history
+            loadHistory();
+            
+            // Add event listeners
+            textInput.addEventListener('input', updateRealTimeCount);
+            countBtn.addEventListener('click', analyzeText);
+            formatTextBtn.addEventListener('click', formatText);
+            copyTextBtn.addEventListener('click', copyText);
+            clearTextBtn.addEventListener('click', clearText);
+            sampleBtn.addEventListener('click', loadSampleText);
+            exportPdfBtn.addEventListener('click', exportAsPdf);
+            exportCsvBtn.addEventListener('click', exportAsCsv);
+            exportTxtBtn.addEventListener('click', exportAsTxt);
+            clearHistoryBtn.addEventListener('click', clearHistory);
+            themeToggle.addEventListener('click', toggleTheme);
+            languageSelect.addEventListener('change', changeLanguage);
+            
+            // Initialize stats
+            resetStats();
+            
+            // Add some sample history items for demonstration
+            if (!localStorage.getItem('textHistory')) {
+                const sampleHistory = [
+                    {
+                        text: "This is an example of previously analyzed text. Countfy keeps track of your text history for easy access.",
+                        timestamp: new Date(Date.now() - 86400000).toISOString() // 1 day ago
+                    },
+                    {
+                        text: "Another example text that was analyzed earlier. You can click on any history item to load it back into the editor.",
+                        timestamp: new Date(Date.now() - 172800000).toISOString() // 2 days ago
+                    }
+                ];
+                localStorage.setItem('textHistory', JSON.stringify(sampleHistory));
+                loadHistory();
+            }
+        }
+
+        // Update real-time character count
+        function updateRealTimeCount() {
+            const text = textInput.value;
+            realTimeCount.textContent = text.length.toLocaleString();
+        }
+
+        // Reset all stats to zero
+        function resetStats() {
+            charCount.textContent = '0';
+            wordCount.textContent = '0';
+            sentenceCount.textContent = '0';
+            numberCount.textContent = '0';
+            punctuationCount.textContent = '0';
+            charNoSpaces.textContent = '0';
+            paragraphCount.textContent = '0';
+            readingTime.textContent = '0 min';
+            seoScore.textContent = '0%';
+            readabilityScore.textContent = '0%';
+            keywordDensity.textContent = '0%';
+            writingTime.textContent = '0 min';
+            
+            // Reset progress bars
+            seoProgress.style.width = '0%';
+            readabilityProgress.style.width = '0%';
+            keywordProgress.style.width = '0%';
+            writingProgress.style.width = '0%';
+            
+            // Reset top lists
+            topWordsList.innerHTML = '<div class="most-used-item"><span class="most-used-text">No data</span><span class="most-used-count">0</span></div>';
+            topCharsList.innerHTML = '<div class="most-used-item"><span class="most-used-text">No data</span><span class="most-used-count">0</span></div>';
+        }
+
+        // Analyze text and update stats
+        function analyzeText() {
+            const text = textInput.value;
+            if (!text.trim()) {
+                showNotification("Please enter some text to analyze", "warning");
+                return;
+            }
+            
+            // Add animation to count button
+            countBtn.classList.add('pulse');
+            setTimeout(() => {
+                countBtn.classList.remove('pulse');
+            }, 1000);
+            
+            // Basic counts
+            const chars = text.length;
+            charCount.textContent = chars.toLocaleString();
+            
+            const charsNoSpaces = text.replace(/\s/g, '').length;
+            charNoSpaces.textContent = charsNoSpaces.toLocaleString();
+            
+            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+            wordCount.textContent = words.toLocaleString();
+            
+            const sentences = text.trim() ? text.split(/[.!?]+/).filter(s => s.trim().length > 0).length : 0;
+            sentenceCount.textContent = sentences.toLocaleString();
+            
+            // Number count
+            const numbers = text.match(/\d/g);
+            const numberCountValue = numbers ? numbers.length : 0;
+            numberCount.textContent = numberCountValue.toLocaleString();
+            
+            // Punctuation count
+            const punctuationMatches = text.match(/[.,!?;:'"-]/g);
+            const punctuation = punctuationMatches ? punctuationMatches.length : 0;
+            punctuationCount.textContent = punctuation.toLocaleString();
+            
+            // Paragraph count
+            const paragraphs = text.trim() ? text.split(/\n+/).filter(p => p.trim().length > 0).length : 0;
+            paragraphCount.textContent = paragraphs.toLocaleString();
+            
+            // Reading time (assuming 200 words per minute)
+            const readingTimeMinutes = Math.floor(words / 200);
+            const readingTimeSeconds = Math.round((words % 200) / 200 * 60);
+            const currentLang = localStorage.getItem('language') || 'en';
+            
+            if (readingTimeMinutes === 0) {
+                readingTime.textContent = `${readingTimeSeconds} ${translations[currentLang].second}`;
+            } else {
+                readingTime.textContent = `${readingTimeMinutes} ${translations[currentLang].minute} ${readingTimeSeconds} ${translations[currentLang].second}`;
+            }
+            
+            // Advanced features
+            const seoScoreValue = calculateSeoScore(text, words, sentences);
+            seoScore.textContent = `${seoScoreValue}%`;
+            seoProgress.style.width = `${seoScoreValue}%`;
+            
+            const readabilityScoreValue = calculateReadabilityScore(text, words, sentences);
+            readabilityScore.textContent = `${readabilityScoreValue}%`;
+            readabilityProgress.style.width = `${readabilityScoreValue}%`;
+            
+            const keywordDensityValue = calculateKeywordDensity(text, words);
+            keywordDensity.textContent = `${keywordDensityValue}%`;
+            keywordProgress.style.width = `${keywordDensityValue}%`;
+            
+            // Writing time (assuming 3 characters per second)
+            const writingTimeSeconds = Math.round(text.length / 3);
+            const writingTimeMinutes = Math.floor(writingTimeSeconds / 60);
+            const writingTimeSecs = writingTimeSeconds % 60;
+            
+            // Calculate writing progress (capped at 100%)
+            const writingProgressValue = Math.min(100, Math.round((writingTimeSeconds / 300) * 100)); // 5 minutes max
+            writingProgress.style.width = `${writingProgressValue}%`;
+            
+            if (writingTimeMinutes === 0) {
+                writingTime.textContent = `${writingTimeSecs} ${translations[currentLang].second}`;
+            } else {
+                writingTime.textContent = `${writingTimeMinutes} ${translations[currentLang].minute} ${writingTimeSecs} ${translations[currentLang].second}`;
+            }
+            
+            // Update score circle
+            const scoreCircle = document.querySelector('.score-circle');
+            scoreCircle.style.background = `conic-gradient(var(--primary-color) 0% ${seoScoreValue}%, var(--border-color) ${seoScoreValue}% 100%)`;
+            
+            // Most used words and characters
+            updateMostUsed(text);
+            
+            // Save to history
+            saveToHistory(text);
+            
+            // Show success notification
+            showNotification(translations[localStorage.getItem('language') || 'en'].countSuccess, "success");
+        }
+
+        // Calculate a comprehensive SEO score
+        function calculateSeoScore(text, words, sentences) {
+            let score = 50; // Base score
+            
+            // Word count factor (optimal: 300-1000 words)
+            if (words >= 300 && words <= 1000) score += 20;
+            else if (words > 1000) score += 10;
+            else if (words < 100) score -= 15;
+            
+            // Sentence length factor (optimal: 15-25 words per sentence)
+            const avgSentenceLength = words / (sentences || 1);
+            if (avgSentenceLength >= 15 && avgSentenceLength <= 25) score += 15;
+            else if (avgSentenceLength > 25) score -= 10;
+            else if (avgSentenceLength < 10) score -= 5;
+            
+            // Paragraph count factor (optimal: 3+ paragraphs)
+            const paragraphs = text.split(/\n+/).filter(p => p.trim().length > 0).length;
+            if (paragraphs >= 3) score += 10;
+            
+            // Keyword density factor (optimal: 1-2%)
+            const keywordDensity = calculateKeywordDensity(text, words);
+            if (keywordDensity >= 1 && keywordDensity <= 2) score += 5;
+            
+            // Ensure score is between 0-100
+            return Math.max(0, Math.min(100, Math.round(score)));
+        }
+
+        // Calculate readability score using Flesch Reading Ease approximation
+        function calculateReadabilityScore(text, words, sentences) {
+            if (words === 0 || sentences === 0) return 0;
+            
+            // Average sentence length
+            const avgSentenceLength = words / sentences;
+            
+            // Average syllables per word (approximation)
+            const syllableCount = countSyllables(text);
+            const avgSyllablesPerWord = syllableCount / words;
+            
+            // Flesch Reading Ease formula (approximation)
+            let fleschScore = 206.835 - (1.015 * avgSentenceLength) - (84.6 * avgSyllablesPerWord);
+            
+            // Normalize to 0-100 scale
+            let normalizedScore = Math.max(0, Math.min(100, fleschScore));
+            
+            // Convert to our 0-100 scale
+            return Math.round(normalizedScore);
+        }
+
+        // Count syllables in text (approximation)
+        function countSyllables(text) {
+            // Simple approximation: count vowel sequences
+            const words = text.toLowerCase().match(/\b\w+\b/g) || [];
+            let syllableCount = 0;
+            
+            words.forEach(word => {
+                // Count vowel groups
+                const vowelGroups = word.match(/[aeiouy]+/g) || [];
+                syllableCount += vowelGroups.length;
+                
+                // Adjust for common exceptions
+                if (word.endsWith('e') && vowelGroups.length > 1) {
+                    syllableCount--; // Silent 'e' at the end
+                }
+                
+                // Ensure at least one syllable per word
+                if (syllableCount === 0) syllableCount = 1;
+            });
+            
+            return syllableCount;
+        }
+
+        // Calculate keyword density
+        function calculateKeywordDensity(text, words) {
+            // Find the most common word
+            const wordFreq = getWordFrequency(text);
+            if (wordFreq.length === 0) return 0;
+            
+            const topWord = wordFreq[0];
+            const density = (topWord.count / words) * 100;
+            
+            return Math.min(100, Math.round(density * 100) / 100); // Round to 2 decimal places
+        }
+
+        // Update most used words and characters
+        function updateMostUsed(text) {
+            // Most used words
+            const wordFreq = getWordFrequency(text);
+            topWordsList.innerHTML = '';
+            
+            if (wordFreq.length === 0) {
+                topWordsList.innerHTML = '<div class="most-used-item"><span class="most-used-text">No data</span><span class="most-used-count">0</span></div>';
+            } else {
+                const topWords = wordFreq.slice(0, 5);
+                topWords.forEach(item => {
+                    const wordItem = document.createElement('div');
+                    wordItem.className = 'most-used-item';
+                    wordItem.innerHTML = `
+                        <span class="most-used-text">${item.word}</span>
+                        <span class="most-used-count">${item.count}</span>
+                    `;
+                    topWordsList.appendChild(wordItem);
+                });
+            }
+            
+            // Most used characters
+            const charFreq = getCharFrequency(text);
+            topCharsList.innerHTML = '';
+            
+            if (charFreq.length === 0) {
+                topCharsList.innerHTML = '<div class="most-used-item"><span class="most-used-text">No data</span><span class="most-used-count">0</span></div>';
+            } else {
+                const topChars = charFreq.slice(0, 5);
+                topChars.forEach(item => {
+                    const charItem = document.createElement('div');
+                    charItem.className = 'most-used-item';
+                    const displayChar = item.char === ' ' ? '[Space]' : 
+                                       item.char === '\n' ? '[Newline]' : 
+                                       item.char === '\t' ? '[Tab]' : item.char;
+                    charItem.innerHTML = `
+                        <span class="most-used-text">${displayChar}</span>
+                        <span class="most-used-count">${item.count}</span>
+                    `;
+                    topCharsList.appendChild(charItem);
+                });
+            }
+        }
+
+        // Get word frequency with improved filtering
+        function getWordFrequency(text) {
+            const words = text.toLowerCase()
+                .match(/\b[\w']+\b/g) || [];
+            const freq = {};
+            
+            words.forEach(word => {
+                // Skip very short words unless they're important
+                if (word.length <= 2 && !['a', 'i', 'an', 'in', 'on', 'at', 'to', 'of', 'is', 'be', 'he', 'she', 'we', 'it', 'my', 'me'].includes(word)) {
+                    return;
+                }
+                
+                freq[word] = (freq[word] || 0) + 1;
+            });
+            
+            return Object.entries(freq)
+                .map(([word, count]) => ({ word, count }))
+                .sort((a, b) => b.count - a.count);
+        }
+
+        // Get character frequency
+        function getCharFrequency(text) {
+            const chars = text.split('');
+            const freq = {};
+            
+            chars.forEach(char => {
+                // Skip whitespace characters that are already represented
+                if (char.trim() === '' && char !== ' ') return;
+                
+                freq[char] = (freq[char] || 0) + 1;
+            });
+            
+            return Object.entries(freq)
+                .map(([char, count]) => ({ char, count }))
+                .sort((a, b) => b.count - a.count);
+        }
+
+        // Format text (add line breaks after sentences)
+        function formatText() {
+            let text = textInput.value;
+            
+            if (!text.trim()) {
+                showNotification("Please enter some text to format", "warning");
+                return;
+            }
+            
+            // Add two line breaks after each sentence-ending punctuation
+            text = text.replace(/([.!?])\s+/g, '$1\n\n');
+            
+            textInput.value = text;
+            showNotification(translations[localStorage.getItem('language') || 'en'].formatSuccess, "success");
+        }
+
+        // Load sample text
+        function loadSampleText() {
+            const currentLang = localStorage.getItem('language') || 'en';
+            textInput.value = sampleTexts[currentLang];
+            analyzeText();
+            showNotification(translations[currentLang].sampleSuccess, "success");
+        }
+
+        // Copy text to clipboard
+        function copyText() {
+            const text = textInput.value;
+            
+            if (!text.trim()) {
+                showNotification("Please enter some text to copy", "warning");
+                return;
+            }
+            
+            textInput.select();
+            document.execCommand('copy');
+            showNotification(translations[localStorage.getItem('language') || 'en'].copySuccess, "success");
+        }
+
+        // Clear text
+        function clearText() {
+            textInput.value = '';
+            resetStats();
+            updateRealTimeCount();
+            showNotification(translations[localStorage.getItem('language') || 'en'].clearSuccess, "success");
+        }
+
+        // Export as PDF
+        function exportAsPdf() {
+            const text = textInput.value;
+            
+            if (!text.trim()) {
+                showNotification("Please enter some text to export", "warning");
+                return;
+            }
+            
+            // In a real implementation, you would use a library like jsPDF
+            // For this demo, we'll just show a notification
+            showNotification(translations[localStorage.getItem('language') || 'en'].exportSuccess, "success");
+        }
+
+        // Export as CSV
+        function exportAsCsv() {
+            const text = textInput.value;
+            
+            if (!text.trim()) {
+                showNotification("Please enter some text to export", "warning");
+                return;
+            }
+            
+            // In a real implementation, you would generate a CSV file
+            // For this demo, we'll just show a notification
+            showNotification(translations[localStorage.getItem('language') || 'en'].exportSuccess, "success");
+        }
+
+        // Export as TXT
+        function exportAsTxt() {
+            const text = textInput.value;
+            
+            if (!text.trim()) {
+                showNotification("Please enter some text to export", "warning");
+                return;
+            }
+            
+            // In a real implementation, you would generate a TXT file
+            // For this demo, we'll just show a notification
+            showNotification(translations[localStorage.getItem('language') || 'en'].exportSuccess, "success");
+        }
+
+        // Save text to history
+        function saveToHistory(text) {
+            let history = JSON.parse(localStorage.getItem('textHistory') || '[]');
+            
+            // Avoid duplicates
+            if (history.length > 0 && history[0].text === text) {
+                return;
+            }
+            
+            // Add to beginning of array
+            history.unshift({
+                text: text,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Keep only last 10 items
+            if (history.length > 10) {
+                history = history.slice(0, 10);
+            }
+            
+            localStorage.setItem('textHistory', JSON.stringify(history));
+            loadHistory();
+        }
+
+        // Load history from localStorage
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem('textHistory') || '[]');
+            const currentLang = localStorage.getItem('language') || 'en';
+            
+            if (history.length === 0) {
+                historyList.innerHTML = `<div class="history-item"><div class="history-text">${translations[currentLang].noHistory}</div></div>`;
+                return;
+            }
+            
+            historyList.innerHTML = '';
+            history.forEach((item, index) => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                
+                const date = new Date(item.timestamp);
+                const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                historyItem.innerHTML = `
+                    <div class="history-text">${item.text.substring(0, 60)}${item.text.length > 60 ? '...' : ''}</div>
+                    <div class="history-meta">
+                        <span>${formattedDate}</span>
+                    </div>
+                    <div class="history-actions">
+                        <button class="history-action-btn" data-index="${index}" title="Load">
+                            <i class="fas fa-upload"></i>
+                        </button>
+                        <button class="history-action-btn" data-index="${index}" title="Delete">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                // Add event listener to load button
+                const loadBtn = historyItem.querySelector('.history-action-btn:first-child');
+                loadBtn.addEventListener('click', () => {
+                    textInput.value = item.text;
+                    analyzeText();
+                });
+                
+                // Add event listener to delete button
+                const deleteBtn = historyItem.querySelector('.history-action-btn:last-child');
+                deleteBtn.addEventListener('click', () => {
+                    deleteHistoryItem(index);
+                });
+                
+                historyList.appendChild(historyItem);
+            });
+        }
+
+        // Delete history item
+        function deleteHistoryItem(index) {
+            let history = JSON.parse(localStorage.getItem('textHistory') || '[]');
+            history.splice(index, 1);
+            localStorage.setItem('textHistory', JSON.stringify(history));
+            loadHistory();
+        }
+
+        // Clear all history
+        function clearHistory() {
+            localStorage.removeItem('textHistory');
+            loadHistory();
+            showNotification(translations[localStorage.getItem('language') || 'en'].clearHistorySuccess, "success");
+        }
+
+        // Toggle theme
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+        }
+
+        // Set theme
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            
+            // Update theme toggle icon
+            const icon = themeToggle.querySelector('i');
+            icon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+
+        // Change language
+        function changeLanguage() {
+            const lang = languageSelect.value;
+            setLanguage(lang);
+        }
+
+        // Set language
+        function setLanguage(lang) {
+            localStorage.setItem('language', lang);
+            languageSelect.value = lang;
+            
+            // Update all text elements
+            document.getElementById('input-label').textContent = translations[lang].inputLabel;
+            document.getElementById('results-label').textContent = translations[lang].resultsLabel;
+            document.getElementById('format-text-label').textContent = translations[lang].formatTextLabel;
+            document.getElementById('copy-text-label').textContent = translations[lang].copyTextLabel;
+            document.getElementById('clear-text-label').textContent = translations[lang].clearTextLabel;
+            document.getElementById('count-text-label').textContent = translations[lang].countTextLabel;
+            document.getElementById('sample-text-label').textContent = translations[lang].sampleTextLabel;
+            document.getElementById('clear-history-label').textContent = translations[lang].clearHistoryLabel;
+            document.getElementById('history-label').textContent = translations[lang].historyLabel;
+            document.getElementById('characters-label').textContent = translations[lang].charactersLabel;
+            document.getElementById('words-label').textContent = translations[lang].wordsLabel;
+            document.getElementById('sentences-label').textContent = translations[lang].sentencesLabel;
+            document.getElementById('numbers-label').textContent = translations[lang].numbersLabel;
+            document.getElementById('punctuation-label').textContent = translations[lang].punctuationLabel;
+            document.getElementById('characters-no-spaces-label').textContent = translations[lang].charactersNoSpacesLabel;
+            document.getElementById('paragraphs-label').textContent = translations[lang].paragraphsLabel;
+            document.getElementById('reading-time-label').textContent = translations[lang].readingTimeLabel;
+            document.getElementById('most-used-label').textContent = translations[lang].mostUsedLabel;
+            document.getElementById('top-words-label').textContent = translations[lang].topWordsLabel;
+            document.getElementById('top-chars-label').textContent = translations[lang].topCharsLabel;
+            document.getElementById('seo-analysis-text').textContent = translations[lang].seoAnalysisText;
+            document.getElementById('readability-text').textContent = translations[lang].readabilityText;
+            document.getElementById('keyword-density-text').textContent = translations[lang].keywordDensityText;
+            document.getElementById('writing-time-text').textContent = translations[lang].writingTimeText;
+            
+            textInput.placeholder = translations[lang].inputPlaceholder;
+            
+            // Reload history to update "no history" message
+            loadHistory();
+        }
+
+        // Show notification with type
+        function showNotification(message, type = "success") {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = 'notification';
+            
+            // Set icon based on type
+            let icon = 'fas fa-check-circle';
+            if (type === 'error') icon = 'fas fa-exclamation-circle';
+            if (type === 'warning') icon = 'fas fa-exclamation-triangle';
+            
+            notification.innerHTML = `<i class="${icon}"></i><span>${message}</span>`;
+            notification.classList.add('show', type);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
