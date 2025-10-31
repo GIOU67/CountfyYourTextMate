@@ -1009,37 +1009,7 @@
             animation: spin 1s linear infinite;
         }
     </style>
-    <!-- Adsterra SmartLink (Banner + Native + Popunder بعد التفاعل) -->
-<script type="text/javascript">
-  atOptions = {
-    'key' : 'v3h2spfw55',
-    'format' : 'iframe',
-    'height' : 300,
-    'width' : 160,
-    'params' : {}
-  };
-  document.write('<scr' + 'ipt type="text/javascript" src="http' + (location.protocol === 'https:' ? 's' : '') + '://www.effectivegatecpm.com/smart.js"></scr' + 'ipt>');
-</script>
-
-<!-- Popunder يفتح بعد أول ضغطة على الأداة -->
-<script type="text/javascript">
-  document.addEventListener('DOMContentLoaded', function() {
-    var analyzed = false;
-    document.body.addEventListener('click', function() {
-      if (!analyzed) {
-        analyzed = true;
-        atOptions = {
-          'key' : 'v3h2spfw55',
-          'format' : 'iframe',
-          'height' : 1,
-          'width' : 1,
-          'params' : {}
-        };
-        document.write('<scr' + 'ipt type="text/javascript" src="http' + (location.protocol === 'https:' ? 's' : '') + '://www.effectivegatecpm.com/popunder1000.js"></scr' + 'ipt>');
-      }
-    });
-  });
-</script>
+    
 </head>
 <body>
     <div class="container">
@@ -1065,11 +1035,44 @@
                         <option value="hi">हिन्दी</option>
                         <option value="fr">Français</option>
                     </select>
-                </div>
-                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-                    <i class="fas fa-moon"></i>
-                </button>
-            </div>
+                <!-- Adsterra SmartLink (Banner + Native) -->
+<script type="text/javascript">
+  atOptions = {
+    'key' : 'v3h2spfw55',
+    'format' : 'iframe',
+    'height' : 300,
+    'width' : 160,
+    'params' : {}
+  };
+  document.write('<scr' + 'ipt type="text/javascript" src="http' + (location.protocol === 'https:' ? 's' : '') + '://www.effectivegatecpm.com/smart.js"></scr' + 'ipt>');
+</script>
+
+<!-- Popunder يفتح مرة واحدة بعد أول "تحليل" -->
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+    var popunderShown = false;
+    
+    // انتظر لما المستخدم يضغط زر "تحليل"
+    document.addEventListener('click', function(e) {
+      if (!popunderShown && e.target && e.target.matches('button.btn-primary')) {
+        popunderShown = true;
+        
+        atOptions = {
+          'key' : 'v3h2spfw55',
+          'format' : 'iframe',
+          'height' : 1,
+          'width' : 1,
+          'params' : {}
+        };
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.async = true;
+        script.src = 'http' + (location.protocol === 'https:' ? 's' : '') + '://www.effectivegatecpm.com/popunder1000.js';
+        document.head.appendChild(script);
+      }
+    });
+  });
+</script>
         </header>
 
         <!-- AdSense Banner -->
