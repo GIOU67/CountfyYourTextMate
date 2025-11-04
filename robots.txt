@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Disallow: /assets/
+
+Sitemap: https://giou67.github.io/CountfyYourTextMate/sitemap.xml
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
